@@ -1,2 +1,2 @@
 # SkyEye
-agent 信息收集服务器
+agent 信息收集

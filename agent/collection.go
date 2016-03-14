@@ -1,11 +1,8 @@
 package main
 
 import (
-	"github.com/nprog/SkyEye/log"
-)
-
-import (
 	"github.com/nprog/SkyEye/common"
+	"github.com/nprog/SkyEye/log"
 	// "github.com/shirou/gopsutil/cpu"
 	// "github.com/shirou/gopsutil/disk"
 	// "github.com/shirou/gopsutil/host"

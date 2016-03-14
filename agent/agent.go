@@ -1,18 +1,53 @@
 package main
 
 import (
+	"flag"
+	"github.com/nprog/SkyEye/common"
 	"github.com/nprog/SkyEye/libnet"
 	"github.com/nprog/SkyEye/log"
+	"os"
 )
 
+//ServerOptions Options
+type ServerOptions struct {
+	ServerAddr string
+}
+
+var confFile = flag.String("c", "agent.conf", "conf file.")
+
 func main() {
-	c, err := libnet.Connect("tcp", "127.0.0.1:2012", libnet.Packet(libnet.Uint16BE, libnet.Json()))
+	var (
+		cfg *Config
+		c   chan int
+	)
+	c = make(chan int)
+
+	//VERSION
+	version()
+	//FLAG PARSE
+	flag.Parse()
+	//READ CONFIG FILE
+	cfg = NewConfig(*confFile)
+	// log
+	common.SetLogSettings(cfg.Log)
+	//TURN ON PPROF
+	if cfg.Debug.PprofFile != "" {
+		common.Pprof(&cfg.Debug.PprofFile)
+	}
+
+	conn, err := libnet.Connect("tcp", cfg.Server.ServerAddr, libnet.Packet(libnet.Uint16BE, libnet.Json()))
 	if err != nil {
 		panic(err)
 	}
 
-	if err = c.Send(struct{}{}); err != nil {
+	if err = conn.Send(struct{}{}); err != nil {
 		log.Error(err.Error())
 	}
-	// Test()
+
+	for {
+		select {
+		case <-c:
+			os.Exit(0)
+		}
+	}
 }
