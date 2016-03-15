@@ -5,6 +5,7 @@ import (
 	"github.com/nprog/SkyEye/common"
 	"github.com/nprog/SkyEye/log"
 	"github.com/nprog/SkyEye/storage/mongo"
+	"strconv"
 )
 
 //Config 读取配置
@@ -71,18 +72,18 @@ func (c *ConfigTemp) Parse() *Config {
 	)
 
 	//Server
-	if c.ServerPort > 0 {
-		serverOptions.Port = c.ServerPort
+	if c.ServerPort > MIN_PORT && c.ServerPort < MAX_PORT {
+		serverOptions.Port = ":" + strconv.Itoa(int(c.ServerPort))
 	} else {
 		serverOptions.Port = CONFIG_DEFAULT_SERVER_PORT
 	}
-	if c.ServerWebPort > 0 {
-		serverOptions.WebPort = c.ServerWebPort
+	if c.ServerWebPort > MIN_PORT && c.ServerWebPort < MAX_PORT {
+		serverOptions.WebPort = ":" + strconv.Itoa(int(c.ServerWebPort))
 	} else {
 		serverOptions.WebPort = CONFIG_DEFAULT_SERVER_PORT
 	}
-	if c.ServerWebsocketPort > 0 {
-		serverOptions.WebsocketPort = c.ServerWebsocketPort
+	if c.ServerWebsocketPort > MIN_PORT && c.ServerWebsocketPort < MAX_PORT {
+		serverOptions.WebsocketPort = ":" + strconv.Itoa(int(c.ServerWebsocketPort))
 	} else {
 		serverOptions.WebsocketPort = CONFIG_DEFAULT_SERVER_PORT
 	}

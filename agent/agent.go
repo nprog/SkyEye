@@ -35,6 +35,10 @@ func main() {
 		common.Pprof(&cfg.Debug.PprofFile)
 	}
 
+	log.Info(cfg.Server)
+	log.Info(cfg.Debug)
+	log.Info(cfg.Log)
+
 	conn, err := libnet.Connect("tcp", cfg.Server.ServerAddr, libnet.Packet(libnet.Uint16BE, libnet.Json()))
 	if err != nil {
 		panic(err)
